@@ -1,0 +1,234 @@
+/* ════════════════════════════════════════════════════════════════
+   SOLGUN KİTABE — TEMA KATMANLARI
+   Üç ruh hâli: hisâr (varsayılan, kandil-altı), külgün (gündüz okuma),
+   karaöz (mehtâb-altı). Karanlık fantastik tonlama.
+   ════════════════════════════════════════════════════════════════ */
+
+:root {
+    /* ────────── Yazı ölçeği (modular, 1.25) ────────── */
+    --t-xs:    0.75rem;
+    --t-sm:    0.875rem;
+    --t-base:  1rem;
+    --t-md:    1.125rem;
+    --t-lg:    1.35rem;
+    --t-xl:    1.7rem;
+    --t-2xl:   2.15rem;
+    --t-3xl:   2.85rem;
+    --t-4xl:   3.75rem;
+    --t-5xl:   5rem;
+
+    /* Okuma alanı yazı ölçeği (kullanıcı tercihiyle çarpılır) */
+    --reader-scale: 1;
+
+    /* Aralık ritmi */
+    --s-1: 0.25rem;
+    --s-2: 0.5rem;
+    --s-3: 0.75rem;
+    --s-4: 1rem;
+    --s-5: 1.5rem;
+    --s-6: 2rem;
+    --s-7: 3rem;
+    --s-8: 4.5rem;
+    --s-9: 6rem;
+
+    /* Hareket eğrileri */
+    --ease-page:    cubic-bezier(0.6, 0.05, 0.3, 1);
+    --ease-veil:    cubic-bezier(0.2, 0.7, 0.2, 1);
+    --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-soft:    cubic-bezier(0.4, 0.1, 0.3, 1);
+
+    /* Süreler */
+    --d-page: 950ms;
+    --d-quick: 220ms;
+    --d-medium: 480ms;
+    --d-slow: 1100ms;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   HİSÂR — Varsayılan. Kandil-altı koridorlar, paslı altın, kuru kan.
+   ════════════════════════════════════════════════════════════════ */
+[data-theme="hisar"] {
+    --c-void:       #060406;
+    --c-shadow:     #0d0a0d;
+    --c-deep:       #181216;
+    --c-bark:       #221a1a;
+    --c-rust:       #3a261c;
+    --c-ember:      #6e3a1c;
+    --c-flame:      #a14a28;
+
+    --c-page:       #d8c8a8;      /* Solmuş parşömen */
+    --c-page-dim:   #c4b08a;
+    --c-page-edge:  #8e7548;
+    --c-page-fold:  #5e4c30;
+    --c-vellum:     #e0d2b2;
+
+    --c-ink:        #1a120c;
+    --c-ink-soft:   #2e1f14;
+    --c-ink-quote:  #4a311c;
+
+    /* "Altın" karanlık fantastikte daha çok pas ve mum yansıması */
+    --c-gold:       #a8842c;
+    --c-gold-soft:  #b89548;
+    --c-gold-bright:#d4b46a;
+    --c-gold-deep:  #6a5224;
+
+    --c-sigil:      #a07028;
+    --c-rune:       #b8843a;
+    --c-blood:      #6a1818;            /* Kuru kan */
+    --c-blood-soft: #8a2c2c;
+    --c-bone:       #d8caa4;
+    --c-iron:       #3a3838;
+    --c-emerald:    #1a3a2a;
+    --c-lapis:      #1c2848;
+    --c-mold:       #4a5238;            /* Küflü bakır */
+
+    --c-chrome-bg:  rgba(6, 4, 6, 0.86);
+    --c-chrome-fg:  #c0a878;
+    --c-chrome-fg-dim: #7a6438;
+    --c-chrome-line: rgba(168, 132, 44, 0.22);
+
+    --bg-stage:
+        radial-gradient(ellipse at center, #18100a 0%, #08050a 60%, #030103 100%);
+    --bg-vignette:
+        radial-gradient(ellipse at center, transparent 28%, rgba(0,0,0,0.88) 100%);
+
+    --shadow-book:
+        0 32px 64px -18px rgba(0,0,0,0.85),
+        0 14px 26px -8px rgba(0,0,0,0.6),
+        0 0 0 1px rgba(168, 132, 44, 0.08);
+    --shadow-page: 0 2px 4px rgba(0,0,0,0.22);
+    --glow-gold:   0 0 14px rgba(168, 132, 44, 0.32);
+    --glow-blood:  0 0 18px rgba(106, 24, 24, 0.32);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   KÜLGÜN — Gündüz okuması. Yağlı parşömen, bakır kandilleri.
+   ════════════════════════════════════════════════════════════════ */
+[data-theme="kulgun"] {
+    --c-void:       #c8b890;
+    --c-shadow:     #b4a278;
+    --c-deep:       #9c8a62;
+    --c-bark:       #786448;
+    --c-rust:       #5a4628;
+    --c-ember:      #6a3818;
+    --c-flame:      #8a4a20;
+
+    --c-page:       #e8d8b2;
+    --c-page-dim:   #d8c498;
+    --c-page-edge:  #a88a55;
+    --c-page-fold:  #6e5630;
+    --c-vellum:     #f0e2bc;
+
+    --c-ink:        #1a120c;
+    --c-ink-soft:   #2e1f14;
+    --c-ink-quote:  #4a311c;
+
+    --c-gold:       #846020;
+    --c-gold-soft:  #946e30;
+    --c-gold-bright:#a8843a;
+    --c-gold-deep:  #4e3a16;
+
+    --c-sigil:      #6e5024;
+    --c-rune:       #846020;
+    --c-blood:      #6a1818;
+    --c-blood-soft: #8a2c2c;
+    --c-bone:       #e0d0a4;
+    --c-iron:       #3a3434;
+    --c-emerald:    #2a4838;
+    --c-lapis:      #1c2848;
+    --c-mold:       #4a5238;
+
+    --c-chrome-bg:  rgba(232, 216, 178, 0.93);
+    --c-chrome-fg:  #3a2818;
+    --c-chrome-fg-dim: #6a5438;
+    --c-chrome-line: rgba(80, 56, 24, 0.32);
+
+    --bg-stage:
+        radial-gradient(ellipse at center, #d8c298 0%, #b89a6a 55%, #8a6e44 100%);
+    --bg-vignette:
+        radial-gradient(ellipse at center, transparent 32%, rgba(50,32,14,0.38) 100%);
+
+    --shadow-book:
+        0 28px 56px -16px rgba(40,28,10,0.5),
+        0 10px 20px -6px rgba(40,28,10,0.32);
+    --shadow-page: 0 2px 4px rgba(60,40,15,0.16);
+    --glow-gold:   0 0 14px rgba(132, 96, 32, 0.30);
+    --glow-blood:  0 0 18px rgba(106, 24, 24, 0.28);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   KARAÖZ — Mehtab-altı. Soğuk mavi-kara, gümüş kan.
+   ════════════════════════════════════════════════════════════════ */
+[data-theme="karaoz"] {
+    --c-void:       #03050a;
+    --c-shadow:     #080b13;
+    --c-deep:       #0e131c;
+    --c-bark:       #161c2a;
+    --c-rust:       #232c40;
+    --c-ember:      #38486a;
+    --c-flame:      #6a82a8;
+
+    --c-page:       #c0bcb0;
+    --c-page-dim:   #a4a094;
+    --c-page-edge:  #6e6a5e;
+    --c-page-fold:  #50483c;
+    --c-vellum:     #c8c4b8;
+
+    --c-ink:        #06080c;
+    --c-ink-soft:   #1e2230;
+    --c-ink-quote:  #3a3e50;
+
+    --c-gold:       #6a82a8;
+    --c-gold-soft:  #8298ba;
+    --c-gold-bright:#a4b8d4;
+    --c-gold-deep:  #3a4a6a;
+
+    --c-sigil:      #5a6e90;
+    --c-rune:       #7892b4;
+    --c-blood:      #5e2828;
+    --c-blood-soft: #7e3a3a;
+    --c-bone:       #c8c4b8;
+    --c-iron:       #2a2e38;
+    --c-emerald:    #284e3a;
+    --c-lapis:      #1e3060;
+    --c-mold:       #3e463a;
+
+    --c-chrome-bg:  rgba(3, 5, 10, 0.88);
+    --c-chrome-fg:  #a8b4c8;
+    --c-chrome-fg-dim: #5e6878;
+    --c-chrome-line: rgba(120, 146, 180, 0.22);
+
+    --bg-stage:
+        radial-gradient(ellipse at center, #0c121e 0%, #050810 55%, #02030608 100%);
+    --bg-vignette:
+        radial-gradient(ellipse at center, transparent 28%, rgba(0,0,0,0.92) 100%);
+
+    --shadow-book:
+        0 32px 64px -18px rgba(0,0,0,0.92),
+        0 14px 26px -8px rgba(0,0,0,0.66);
+    --shadow-page: 0 2px 4px rgba(0,0,0,0.25);
+    --glow-gold:   0 0 14px rgba(120, 146, 180, 0.28);
+    --glow-blood:  0 0 18px rgba(94, 40, 40, 0.32);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   KATEGORİ AKSANLARI — her bölüm türü kendi rengini taşır
+   ════════════════════════════════════════════════════════════════ */
+:root {
+    --cat-diyar:     #8a3a3a;   /* Diyârlar — kuru kan */
+    --cat-mahluk:    #5e4878;   /* Mahlûkât — mor küf */
+    --cat-tarikat:   #4a5e3a;   /* Tarîkât — küflü bakır */
+    --cat-emanet:    #8a6a2a;   /* Emanetler — pas altın */
+    --cat-vesika:    #555e6e;   /* Vesîkalar — kül grisi */
+    --cat-vakayiname:#7a3a52;   /* Vakâyiname — koyu menekşe */
+}
+
+/* ────────── Reduced motion: tüm hareket sıfırlanır ────────── */
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --d-page: 0ms;
+        --d-quick: 0ms;
+        --d-medium: 0ms;
+        --d-slow: 0ms;
+    }
+}

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta name="description" content="Solgun Kitabe — Çöken Varân İmparatorluğu'nun yasak arşivi. Mahlûkât, tarîkât, emanetler ve vakâyiname." />
+    <meta name="theme-color" content="#06040a" />
+    <title>Solgun Kitabe · Çöken İmparatorluğun Yasak Arşivi</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=EB+Garamond:wght@400;500&family=UnifrakturMaguntia&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="styles/themes.css" />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/animations.css" />
+
+    <!-- Düşük güç modu tespiti — ilk boyamadan önce uygulanır. -->
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('solgun-kitabe:v1:perfMode');
+                var mode = saved ? JSON.parse(saved) : null;
+                if (mode === null) {
+                    var nav = window.navigator || {};
+                    var cores = nav.hardwareConcurrency || 4;
+                    var mem = nav.deviceMemory || 4;
+                    var coarse = matchMedia && matchMedia('(any-pointer: coarse)').matches;
+                    var smallish = window.innerWidth < 900;
+                    var reduce = matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    mode = (cores <= 4 || mem <= 4 || (coarse && smallish) || reduce) ? 'lite' : 'rich';
+                }
+                document.documentElement.dataset.perf = mode;
+            } catch (e) {
+                document.documentElement.dataset.perf = 'rich';
+            }
+        })();
+    </script>
+</head>
+<body class="is-loading" data-theme="hisar">
+
+    <!-- ════════════ AÇILIŞ MÜHRÜ ════════════ -->
+    <div id="loader" class="loader" aria-hidden="true">
+        <div class="loader__sigil">
+            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                    <radialGradient id="sigilGold" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#d4b46a" />
+                        <stop offset="60%" stop-color="#a8842c" />
+                        <stop offset="100%" stop-color="#5a3a10" />
+                    </radialGradient>
+                </defs>
+                <!-- Dış halka -->
+                <circle cx="60" cy="60" r="54" fill="none" stroke="url(#sigilGold)" stroke-width="0.7" opacity="0.7"/>
+                <circle cx="60" cy="60" r="44" fill="none" stroke="url(#sigilGold)" stroke-width="0.5" opacity="0.5"/>
+                <!-- Yedi kola dağılan haç -->
+                <g class="loader__rune" stroke="url(#sigilGold)" stroke-width="1.1" fill="none">
+                    <path d="M60 8 L60 112" />
+                    <path d="M22 30 L98 30" />
+                    <path d="M60 30 L60 30" />
+                    <path d="M30 60 L90 60" />
+                    <path d="M22 90 L98 90" />
+                </g>
+                <!-- Yedi diken -->
+                <g stroke="url(#sigilGold)" stroke-width="0.6" fill="none" opacity="0.85">
+                    <path d="M60 60 L42 42" />
+                    <path d="M60 60 L78 42" />
+                    <path d="M60 60 L42 78" />
+                    <path d="M60 60 L78 78" />
+                </g>
+                <circle cx="60" cy="60" r="7" fill="url(#sigilGold)"/>
+                <circle cx="60" cy="60" r="2.6" fill="#16100a"/>
+            </svg>
+        </div>
+        <p class="loader__text">Mühür çözülüyor…</p>
+    </div>
+
+    <!-- ════════════ AMBIENT KATMANI ════════════ -->
+    <div class="ambient" aria-hidden="true">
+        <div class="ambient__vignette"></div>
+        <div class="ambient__nebula"></div>
+        <div class="ambient__dust"></div>
+    </div>
+
+    <!-- ════════════ ÜST ÇERÇEVE ════════════ -->
+    <header class="chrome chrome--top" role="banner">
+        <div class="chrome__brand">
+            <span class="chrome__monogram" aria-hidden="true">℟</span>
+            <span class="chrome__title">Solgun Kitabe</span>
+        </div>
+        <div class="chrome__actions">
+            <button class="chrome__btn" id="btn-toc" type="button" aria-label="Fihrist'i aç" title="Fihrist (F)">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M4 5h16v2H4zm0 6h16v2H4zm0 6h10v2H4z"/></svg>
+            </button>
+            <button class="chrome__btn" id="btn-bookmark" type="button" aria-label="Bu folyoya kan-iz koy" title="Kan-iz (K)">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M6 3h12v18l-6-4-6 4z"/></svg>
+            </button>
+            <button class="chrome__btn" id="btn-bookmarks" type="button" aria-label="Kan-izleri aç" title="Kan-izler (İ)">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.5" d="M5 3h14v18l-7-4.5L5 21z"/></svg>
+            </button>
+            <button class="chrome__btn" id="btn-theme" type="button" aria-label="Atmosfer temasını değiştir" title="Tema (T)">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A8 8 0 0 1 12 2z"/></svg>
+            </button>
+            <button class="chrome__btn" id="btn-font" type="button" aria-label="Yazı boyutunu değiştir" title="Yazı (Y)">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><text x="4" y="18" font-family="serif" font-weight="700" font-size="18" fill="currentColor">Aa</text></svg>
+            </button>
+            <button class="chrome__btn" id="btn-perf" type="button" aria-label="Performans modunu değiştir" title="Performans (P)">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M13 2 3 14h7l-1 8 11-13h-7z"/></svg>
+            </button>
+            <button class="chrome__btn" id="btn-fullscreen" type="button" aria-label="Tam ekranda oku" title="Tam Ekran (E)">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M4 4h6v2H6v4H4zm10 0h6v6h-2V6h-4zM4 14h2v4h4v2H4zm14 0h2v6h-6v-2h4z"/></svg>
+            </button>
+            <button class="chrome__btn" id="btn-print" type="button" aria-label="Kodeksi PDF olarak çıkar" title="PDF Çıkar (D)">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M7 3h10v6H7zM5 9h14a2 2 0 0 1 2 2v6h-4v4H7v-4H3v-6a2 2 0 0 1 2-2zm2 8v4h10v-4z"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- ════════════ KÜRSÜ — KİTÂB ════════════ -->
+    <main class="stage" id="stage" role="main" aria-label="Solgun Kitabe okuma kürsüsü">
+        <div class="stage__pedestal" aria-hidden="true"></div>
+
+        <div class="book" id="book" aria-roledescription="interaktif kitap" tabindex="0">
+            <div class="book__shadow" aria-hidden="true"></div>
+
+            <!-- Sayfalar book.js tarafından buraya bağlanır -->
+            <div class="book__pages" id="book-pages"></div>
+
+            <!-- Çevirme alanları -->
+            <button class="book__edge book__edge--left" id="edge-prev" type="button" aria-label="Önceki sayfa">
+                <span class="book__edge-arrow" aria-hidden="true">‹</span>
+            </button>
+            <button class="book__edge book__edge--right" id="edge-next" type="button" aria-label="Sonraki sayfa">
+                <span class="book__edge-arrow" aria-hidden="true">›</span>
+            </button>
+
+            <!-- Kan şeridi — kan-iz konulmuş folyolarda görünür -->
+            <div class="book__ribbon" id="book-ribbon" aria-hidden="true"></div>
+        </div>
+    </main>
+
+    <!-- ════════════ ALT ÇERÇEVE ════════════ -->
+    <footer class="chrome chrome--bottom" role="contentinfo">
+        <button class="chrome__nav" id="btn-prev" type="button" aria-label="Önceki açılış">
+            <span aria-hidden="true">◂</span><span class="chrome__nav-label">Önceki</span>
+        </button>
+
+        <div class="chrome__progress" aria-label="Okuma ilerlemesi">
+            <div class="chrome__chapter" id="chapter-label">—</div>
+            <div class="chrome__bar"><div class="chrome__bar-fill" id="progress-fill"></div></div>
+            <div class="chrome__pages"><span id="page-current">1</span> <span class="chrome__sep">/</span> <span id="page-total">1</span></div>
+        </div>
+
+        <button class="chrome__nav" id="btn-next" type="button" aria-label="Sonraki açılış">
+            <span class="chrome__nav-label">Sonraki</span><span aria-hidden="true">▸</span>
+        </button>
+    </footer>
+
+    <!-- ════════════ FİHRİST KAPISI ════════════ -->
+    <aside class="drawer" id="toc-drawer" aria-hidden="true" aria-labelledby="toc-title">
+        <div class="drawer__scrim" data-drawer-close></div>
+        <div class="drawer__panel" role="dialog" aria-modal="true">
+            <header class="drawer__head">
+                <h2 id="toc-title" class="drawer__title">Defter-i Fihrist</h2>
+                <button class="drawer__close" type="button" aria-label="Kapat" data-drawer-close>×</button>
+            </header>
+
+            <div class="drawer__filters" id="toc-filters" role="tablist" aria-label="Kategoriye göre süz"></div>
+
+            <div class="drawer__search">
+                <input type="search" id="toc-search" placeholder="Arşivde ara…" aria-label="Arşivde ara" autocomplete="off" />
+            </div>
+
+            <nav class="drawer__list" id="toc-list" aria-label="Kayıtlar"></nav>
+        </div>
+    </aside>
+
+    <!-- ════════════ KAN-İZLER KAPISI ════════════ -->
+    <aside class="drawer drawer--right" id="bookmarks-drawer" aria-hidden="true" aria-labelledby="bm-title">
+        <div class="drawer__scrim" data-drawer-close></div>
+        <div class="drawer__panel" role="dialog" aria-modal="true">
+            <header class="drawer__head">
+                <h2 id="bm-title" class="drawer__title">Kan-iz Düşülmüş Folyolar</h2>
+                <button class="drawer__close" type="button" aria-label="Kapat" data-drawer-close>×</button>
+            </header>
+            <div class="drawer__list" id="bookmarks-list"></div>
+        </div>
+    </aside>
+
+    <!-- ════════════ TOAST ════════════ -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- ════════════ KLAVYE İPUCU ════════════ -->
+    <div class="hint" id="hint" aria-hidden="true">
+        <span><kbd>←</kbd><kbd>→</kbd> sayfa</span>
+        <span><kbd>F</kbd> fihrist</span>
+        <span><kbd>K</kbd> kan-iz</span>
+        <span><kbd>E</kbd> tam ekran</span>
+    </div>
+
+    <!-- ════════════ PRINT MOUNT ════════════ -->
+    <div class="print-mount" id="print-mount" aria-hidden="true"></div>
+
+    <!-- ════════════ DOSYALAR ════════════ -->
+    <script src="content/codex-data.js"></script>
+    <script src="content/realms.js"></script>
+    <script src="content/bestiary.js"></script>
+    <script src="content/orders.js"></script>
+    <script src="content/relics.js"></script>
+    <script src="content/chronicles.js"></script>
+    <script src="content/fragments.js"></script>
+    <script src="content/finalize.js"></script>
+    <script src="scripts/storage.js"></script>
+    <script src="scripts/book.js"></script>
+    <script src="scripts/pdf-export.js"></script>
+    <script src="scripts/app.js"></script>
+</body>
+</html>

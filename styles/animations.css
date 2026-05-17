@@ -1,0 +1,175 @@
+/* ════════════════════════════════════════════════════════════════
+   SOLGUN KİTABE — HAREKETLER
+   Sayfa çevirme, ambient sürüklenme, mikro-etkileşimler.
+   Tüm sonsuz animasyonlar [data-perf="rich"] içinde tutulur.
+   ════════════════════════════════════════════════════════════════ */
+
+/* ───── SAYFA ÇEVİRME — 3B (rich) ───── */
+
+.page--turning {
+    z-index: 60;
+    will-change: transform;
+}
+[data-perf="rich"] .page--right.page--turning {
+    transition: transform var(--d-page) var(--ease-page);
+    transform-origin: left center;
+}
+[data-perf="rich"] .page--left.page--turning {
+    transition: transform var(--d-page) var(--ease-page);
+    transform-origin: right center;
+}
+[data-perf="rich"] .page--right.page--turning.page--turn-forward {
+    transform: rotateY(-180deg);
+}
+[data-perf="rich"] .page--left.page--turning.page--turn-backward {
+    transform: rotateY(180deg);
+}
+
+/* ───── SAYFA ÇEVİRME — opaklık çapraz geçişi (lite) ───── */
+
+[data-perf="lite"] .page--turning {
+    transition: opacity calc(var(--d-page) * 0.45) var(--ease-veil),
+                transform calc(var(--d-page) * 0.45) var(--ease-veil);
+    will-change: opacity, transform;
+}
+[data-perf="lite"] .page--turning.page--turn-forward {
+    opacity: 0;
+    transform: translate3d(-12px, 0, 0);
+}
+[data-perf="lite"] .page--turning.page--turn-backward {
+    opacity: 0;
+    transform: translate3d(12px, 0, 0);
+}
+
+/* ───── KIVRIM GÖLGESİ (rich) ───── */
+
+.page__curl {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.14) 50%, rgba(0,0,0,0.32) 100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity calc(var(--d-page) * 0.5) var(--ease-soft);
+    z-index: 4;
+}
+[data-perf="rich"] .page--turning .page__curl { opacity: 1; }
+[data-perf="lite"] .page__curl { display: none; }
+
+/* Sabitlenmiş sayfa katmanları */
+.page--current { z-index: 10; }
+.page--reveal  { z-index: 1; }
+
+/* ───── GİRİŞ ANİMASYONLARI ───── */
+
+@keyframes page-rise {
+    from { opacity: 0; transform: translate3d(0, 12px, 0); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.book.is-ready .page--current {
+    animation: page-rise 0.84s var(--ease-veil) backwards;
+}
+
+@keyframes book-open {
+    0%   { transform: scale(0.85); opacity: 0; }
+    100% { transform: scale(1);    opacity: 1; }
+}
+body:not(.is-loading) .book {
+    animation: book-open 1.05s var(--ease-veil) both;
+}
+
+@keyframes text-fade-in {
+    from { opacity: 0; transform: translate3d(0, 4px, 0); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.page--current .page__content {
+    animation: text-fade-in 0.48s var(--ease-veil) 0.12s both;
+}
+
+/* ───── KAPI GİRİŞLERİ ───── */
+
+.drawer[aria-hidden="false"] .drawer__entry {
+    animation: drawer-entry-rise 0.42s var(--ease-veil) backwards;
+}
+@keyframes drawer-entry-rise {
+    from { opacity: 0; transform: translate3d(-8px, 0, 0); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.drawer[aria-hidden="false"] .drawer__entry:nth-child(1) { animation-delay: 0.04s; }
+.drawer[aria-hidden="false"] .drawer__entry:nth-child(2) { animation-delay: 0.07s; }
+.drawer[aria-hidden="false"] .drawer__entry:nth-child(3) { animation-delay: 0.10s; }
+.drawer[aria-hidden="false"] .drawer__entry:nth-child(4) { animation-delay: 0.13s; }
+.drawer[aria-hidden="false"] .drawer__entry:nth-child(5) { animation-delay: 0.16s; }
+.drawer[aria-hidden="false"] .drawer__entry:nth-child(n+6) { animation-delay: 0.18s; }
+
+/* ───── SONSUZ AMBIENT DÖNGÜLER (rich) ───── */
+
+@keyframes nebula-drift {
+    0%   { transform: translate3d(0, 0, 0); }
+    50%  { transform: translate3d(2%, -1%, 0); }
+    100% { transform: translate3d(0, 0, 0); }
+}
+[data-perf="rich"] .ambient__nebula {
+    animation: nebula-drift 110s ease-in-out infinite;
+}
+
+@keyframes dust-drift {
+    0%   { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-40px, 60px, 0); }
+}
+[data-perf="rich"] .ambient__dust {
+    animation: dust-drift 130s linear infinite alternate;
+}
+
+/* Sekme gizliyken duraklat */
+.is-doc-hidden .ambient__nebula,
+.is-doc-hidden .ambient__dust,
+.is-doc-hidden .loader__sigil {
+    animation-play-state: paused !important;
+}
+
+/* ───── MÜHÜR-AÇILIŞ DEVİNİMİ ───── */
+
+@keyframes sigil-rotate { to { transform: rotate(360deg); } }
+@keyframes sigil-pulse {
+    0%, 100% { opacity: 0.85; }
+    50%      { opacity: 1; }
+}
+@keyframes sigil-rune-pulse {
+    0%, 100% { opacity: 0.4; }
+    50%      { opacity: 1; }
+}
+@keyframes text-flicker {
+    0%, 100% { opacity: 0.55; }
+    50%      { opacity: 0.95; }
+}
+
+/* ───── KAPAK PARILTISI (rich) ───── */
+
+@keyframes cover-glow {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.045); }
+}
+[data-perf="rich"] .cover__crest {
+    animation: cover-glow 7s ease-in-out infinite;
+}
+
+/* ───── İLLÜMİNE HARF PARILTISI (rich) ───── */
+
+@keyframes illuminated-glow {
+    0%, 100% { text-shadow: 0 0 0 rgba(106, 24, 24, 0); }
+    50%      { text-shadow: 0 0 20px rgba(106, 24, 24, 0.28); }
+}
+[data-perf="rich"] .story-body p:first-child::first-letter {
+    animation: illuminated-glow 5.5s ease-in-out infinite;
+}
+
+/* ───── İNDİRGENMİŞ HAREKET ───── */
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
