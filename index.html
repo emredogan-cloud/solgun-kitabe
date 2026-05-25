@@ -11,9 +11,20 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=EB+Garamond:wght@400;500&family=UnifrakturMaguntia&display=swap" rel="stylesheet" />
 
+    <!-- Kitap kimliği / paylaşım görseli (alan adı belli olunca og:image mutlak URL'ye çevrilebilir) -->
+    <meta property="og:type" content="book" />
+    <meta property="og:title" content="Solgun Kitabe · Çöken İmparatorluğun Yasak Arşivi" />
+    <meta property="og:description" content="Çöken Varân İmparatorluğu'nun yasak arşivi — Osmanlı-gotik bir arkanum." />
+    <meta property="og:image" content="assets/cover.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Kapak görselini erkenden getir (eşik hızlı boyansın) -->
+    <link rel="preload" as="image" href="assets/cover.webp" type="image/webp" fetchpriority="high" />
+
     <link rel="stylesheet" href="styles/themes.css" />
     <link rel="stylesheet" href="styles/main.css" />
     <link rel="stylesheet" href="styles/animations.css" />
+    <link rel="stylesheet" href="styles/cover.css" />
 
     <!-- Düşük güç modu tespiti — ilk boyamadan önce uygulanır. -->
     <script>
@@ -38,6 +49,46 @@
     </script>
 </head>
 <body class="is-loading" data-theme="hisar">
+
+    <!-- ════════════ GİRİŞ EŞİĞİ — KAPAK (kodeks bunun ardında, görünmeden kurulur) ════════════ -->
+    <div id="cover-gate" class="cover-gate" role="dialog" aria-modal="true" aria-label="Solgun Kitabe — kapak">
+        <button id="cover-open" class="book3d" type="button" aria-label="Solgun Kitabe — kitabı aç">
+            <picture>
+                <source srcset="assets/cover.webp" type="image/webp" />
+                <img class="book3d__cover" src="assets/cover.jpg"
+                     width="1024" height="1536"
+                     alt="Solgun Kitabe — kapak: küle gömülü, gözleri soluk soluk ışıyan yaldızlı bir taş figür ve göğsünde bir tılsım."
+                     decoding="async" fetchpriority="high" />
+            </picture>
+            <span class="book3d__spine" aria-hidden="true"></span>
+            <span class="book3d__ribbon" aria-hidden="true"></span>
+            <span class="book3d__peel" aria-hidden="true"></span>
+        </button>
+        <p class="cover-gate__cue" aria-hidden="true">kapağı arala</p>
+    </div>
+    <script>
+        (function () {
+            var b = document.body,
+                gate = document.getElementById('cover-gate'),
+                openBtn = document.getElementById('cover-open');
+            var navKeys = ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' ','f','F','k','K','i','I','İ','t','T','y','Y','p','P','v','V','b','B','m','M','a','A','x','X','s','S','w','W','d','D'];
+            function enter() {
+                if (b.classList.contains('is-entered')) return;
+                b.classList.add('is-entered');
+                var book = document.getElementById('book');
+                if (book) { try { book.focus({ preventScroll: true }); } catch (e) {} }
+                setTimeout(function () { if (gate) gate.setAttribute('aria-hidden', 'true'); }, 650);
+            }
+            if (openBtn) openBtn.addEventListener('click', function (e) { e.stopPropagation(); enter(); });
+            if (gate) gate.addEventListener('click', enter);
+            document.addEventListener('keydown', function (e) {
+                if (b.classList.contains('is-entered')) return;
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); enter(); return; }
+                if (navKeys.indexOf(e.key) !== -1) { e.stopPropagation(); }
+            }, true);
+            try { if (openBtn) openBtn.focus({ preventScroll: true }); } catch (e) {}
+        })();
+    </script>
 
     <!-- ════════════ AÇILIŞ MÜHRÜ ════════════ -->
     <div id="loader" class="loader" aria-hidden="true">
